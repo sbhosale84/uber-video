@@ -1,51 +1,26 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import React from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
-const UserLogout = () => {
-  const navigate = useNavigate();
+export const UserLogout = () => {
 
-  useEffect(() => {
-    const logout = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.warn("No token found, redirecting to login...");
-        navigate("/login");
-        return;
-      }
+    const token = localStorage.getItem('token')
+    const navigate = useNavigate()
 
-      try {
-        console.log("Sending logout request with token:", token);
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/users/logout`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
-
+    axios.get(`${import.meta.env.VITE_API_URL}/users/logout`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then((response) => {
         if (response.status === 200) {
-          console.log("Logout successful:", response.data);
-          localStorage.removeItem("token");
-          navigate("/login");
+            localStorage.removeItem('token')
+            navigate('/login')
         }
-      } catch (error) {
-        console.error("Logout failed:", error);
-        if (error.response && error.response.status === 401) {
-          console.warn(
-            "Unauthorized request, clearing token and redirecting..."
-          );
-          localStorage.removeItem("token");
-          navigate("/login");
-        }
-      }
-    };
+    })
 
-    logout();
-  }, [navigate]);
+    return (
+        <div>UserLogout</div>
+    )
+}
 
-  return <div>Logging out...</div>;
-};
-
-export default UserLogout;
+export default UserLogout

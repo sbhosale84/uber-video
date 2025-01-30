@@ -1,48 +1,26 @@
-import axios from "axios";
-import React, { useEffect } from "react";
-import { useNavigate } from "react-router-dom";
 
-const CaptainLogout = () => {
-  const navigate = useNavigate();
+import React from 'react'
+import axios from 'axios'
+import { useNavigate } from 'react-router-dom'
 
-  useEffect(() => {
-    const logout = async () => {
-      const token = localStorage.getItem("token");
-      if (!token) {
-        console.warn("No token found, redirecting to login...");
-        navigate("/captain-login");
-        return;
-      }
+export const CaptainLogout = () => {
+    const token = localStorage.getItem('captain-token')
+    const navigate = useNavigate()
 
-      try {
-        const response = await axios.get(
-          `${import.meta.env.VITE_BASE_URL}/captains/logout`,
-          {
-            headers: {
-              Authorization: `Bearer ${token}`,
-            },
-          }
-        );
+    axios.get(`${import.meta.env.VITE_API_URL}/captains/logout`, {
+        headers: {
+            Authorization: `Bearer ${token}`
+        }
+    }).then((response) => {
         if (response.status === 200) {
-          console.log("Logout successful", response.status);
-          localStorage.removeItem("token");
-          navigate("/captain-login");
+            localStorage.removeItem('captain-token')
+            navigate('/captain-login')
         }
-      } catch (error) {
-        console.error("Logout failed:", error);
-        if (error.response && error.response.status === 401) {
-          console.warn(
-            "Unauthorized request, clearing token and redirecting..."
-          );
-          localStorage.removeItem("token");
-          navigate("/captain-login");
-        }
-      }
-    };
-    logout();
-  }, [navigate]);
+    })
 
-  return <div>Logging out...</div>;
-};
+    return (
+        <div>CaptainLogout</div>
+    )
+}
 
-export default CaptainLogout;
+export default CaptainLogout

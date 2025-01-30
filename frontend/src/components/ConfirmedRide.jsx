@@ -1,6 +1,14 @@
 import React from "react";
 
-const ConfirmedRide = ({ setConfirmedRidePanel, setVehicleFound }) => {
+const ConfirmedRide = ({
+  setConfirmedRidePanel,
+  setVehicleFound,
+  createRide,
+  vehicleType,
+  pickup,
+  destination,
+  fare,
+}) => {
   return (
     <div>
       <h5
@@ -23,32 +31,36 @@ const ConfirmedRide = ({ setConfirmedRidePanel, setVehicleFound }) => {
         <div className="flex items-center p-2 justify-start gap-5 w-full border-b-2 border-gray-200">
           <i className="ri-map-pin-2-fill"></i>
           <div className="">
-            <h3 className="font-bold">526/11-A</h3>
-            <p className="font-medium  text-gray-500">
-              Chiplun kaviltali, 415605
+            <p className="font-medium text-gray-500">
+              <h3 className="text-black font-bold">{pickup.split(",")[0]}</h3>
+              {pickup.split(",").slice(1).join(",")}
             </p>
           </div>
         </div>
         <div className="flex items-center p-2 justify-start gap-5 w-full border-b-2 border-gray-200">
           <i className="ri-square-fill"></i>
           <div className="">
-            <h3 className="font-bold">Third Wave Coffee</h3>
-            <p className="font-medium  text-gray-500">
-              Chiplun kaviltali, 415605
+            <p className="font-medium text-gray-500">
+              <h3 className="text-black font-bold">
+                {destination.split(",")[0]}
+              </h3>{" "}
+              {destination.split(",").slice(1).join(",")}
             </p>
           </div>
         </div>
         <div className="flex items-center p-2 justify-start gap-5 w-full ">
           <i className="ri-bank-card-fill"></i>
           <div className="">
-            <h3 className="font-bold">₹193.34</h3>
+            <h3 className="font-bold">₹{fare[vehicleType]}</h3>
             <p className=" font-medium  text-gray-500 ">Cash Cash</p>
           </div>
         </div>
       </div>
       <button
         onClick={() => {
-          setVehicleFound(true), setConfirmedRidePanel(false);
+          createRide(vehicleType),
+            setVehicleFound(true),
+            setConfirmedRidePanel(false);
         }}
         className="w-full text-white active:bg-green-600 bg-green-500 font-semibold p-2 rounded-lg mt-5"
       >
